@@ -61,7 +61,18 @@ export class InstapaperClient {
       limit: String(opts.limit ?? 25),
     };
     if (opts.have && opts.have.length > 0) {
-      params.have = opts.have.join(",");
+      // Instapaper rejects (or silently truncates) requests whose form body
+      // exceeds ~8KB. Once the user has thousands of synced bookmarks, the
+      // comma-joined `have` list grows unbounded and quietly stops deduping
+      // — every run then re-fetches the full archive. Cap to the most
+      // recent 500 ids; older items aren't going to reappear in the API's
+      // response anyway since we sort by recency.
+      const HAVE_CAP = 500;
+      const recent =
+        opts.have.length > HAVE_CAP
+          ? opts.have.slice(opts.have.length - HAVE_CAP)
+          : opts.have;
+      params.have = recent.join(",");
     }
     const body = new URLSearchParams(params).toString();
     const requestData = { url, method: "POST", data: params };
