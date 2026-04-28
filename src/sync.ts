@@ -26,6 +26,11 @@ function buildContent(b: InstapaperBookmark): string {
   return [b.title, b.url, b.description ?? ""].filter(Boolean).join("\n\n");
 }
 
+function hasIngestableContent(b: InstapaperBookmark): boolean {
+  // Bookmarks with neither a title nor a URL are useless to ingest.
+  return Boolean((b.title && b.title.trim()) || (b.url && b.url.trim()));
+}
+
 export async function syncOnce(opts: SyncOptions): Promise<SyncResult> {
   const state = loadState(opts.statePath);
   const known = new Set(state.syncedIds);
@@ -39,6 +44,11 @@ export async function syncOnce(opts: SyncOptions): Promise<SyncResult> {
   for (const b of bookmarks) {
     const id = String(b.bookmark_id);
     if (known.has(id)) continue;
+    if (!hasIngestableContent(b)) {
+      // Mark as known so we don't re-evaluate every run, but skip the add.
+      known.add(id);
+      continue;
+    }
     await opts.memory.add(buildContent(b), {
       metadata: {
         source: "instapaper",
