@@ -50,6 +50,11 @@ export async function syncOnce(opts: SyncOptions): Promise<SyncResult> {
     });
     known.add(id);
     itemsSynced += 1;
+    // Persist after every successful add so a mid-run failure doesn't re-ingest.
+    saveState(opts.statePath, {
+      syncedIds: [...known],
+      lastRunAt: state.lastRunAt,
+    });
   }
 
   saveState(opts.statePath, {
