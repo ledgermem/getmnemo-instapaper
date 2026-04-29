@@ -3,8 +3,8 @@ export interface InstapaperConfig {
   consumerSecret: string;
   oauthToken: string;
   oauthSecret: string;
-  ledgermemApiKey: string;
-  ledgermemWorkspaceId: string;
+  getmnemoApiKey: string;
+  getmnemoWorkspaceId: string;
   statePath: string;
   pageSize: number;
   folder: string;
@@ -15,8 +15,8 @@ const REQUIRED = [
   "INSTAPAPER_CONSUMER_SECRET",
   "INSTAPAPER_OAUTH_TOKEN",
   "INSTAPAPER_OAUTH_SECRET",
-  "LEDGERMEM_API_KEY",
-  "LEDGERMEM_WORKSPACE_ID",
+  "GETMNEMO_API_KEY",
+  "GETMNEMO_WORKSPACE_ID",
 ] as const;
 
 export function loadConfig(): InstapaperConfig {
@@ -30,11 +30,11 @@ export function loadConfig(): InstapaperConfig {
     consumerSecret: process.env.INSTAPAPER_CONSUMER_SECRET as string,
     oauthToken: process.env.INSTAPAPER_OAUTH_TOKEN as string,
     oauthSecret: process.env.INSTAPAPER_OAUTH_SECRET as string,
-    ledgermemApiKey: process.env.LEDGERMEM_API_KEY as string,
-    ledgermemWorkspaceId: process.env.LEDGERMEM_WORKSPACE_ID as string,
+    getmnemoApiKey: process.env.GETMNEMO_API_KEY as string,
+    getmnemoWorkspaceId: process.env.GETMNEMO_WORKSPACE_ID as string,
     statePath:
       process.env.INSTAPAPER_STATE_PATH ??
-      `${home}/.ledgermem/instapaper.json`,
+      `${home}/.getmnemo/instapaper.json`,
     pageSize: Number(process.env.INSTAPAPER_PAGE_SIZE ?? 25),
     folder: process.env.INSTAPAPER_FOLDER ?? "unread",
   };

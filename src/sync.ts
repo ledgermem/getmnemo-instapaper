@@ -1,4 +1,4 @@
-import type { LedgerMem } from "@ledgermem/memory";
+import type { Mnemo } from "@getmnemo/memory";
 import {
   InstapaperClient,
   type InstapaperBookmark,
@@ -6,7 +6,7 @@ import {
 import { loadState, saveState } from "./state.js";
 
 export interface MemoryClient {
-  add: LedgerMem["add"];
+  add: Mnemo["add"];
 }
 
 export interface SyncOptions {
