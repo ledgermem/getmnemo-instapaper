@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import "dotenv/config";
-import { Mnemo } from "@getmnemo/memory";
+import { Mnemo } from "@mnemo/memory";
 import { loadConfig } from "./config.js";
 import { InstapaperClient } from "./instapaper-client.js";
 import { syncOnce } from "./sync.js";
